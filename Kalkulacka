@@ -1,0 +1,163 @@
+//Arseniy Zolotarev
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace DomaciUloha1
+{
+    static class Calculator
+    {
+        public static List<double> numbersList = new List<double>();
+
+        public static void AddNumbersToList()
+        {
+            numbersList.Clear();
+            for (int i = 1; i < int.MaxValue; i++)
+            {
+                Console.WriteLine($"Zadej {i} cislo nebo napis konec");
+                var usersInput = Console.ReadLine();
+                if (usersInput == "konec")
+                {
+                    break;
+                }
+
+                if (double.TryParse(usersInput, out double usersDoubleNumber))
+                {
+                    numbersList.Add(usersDoubleNumber);
+                }
+                else
+                {
+                    Console.WriteLine("To neni cislo");
+                    i--;
+                }
+            }
+        }
+
+        public static string PrintNumbersList()
+        {
+            return $"Vypis cisel: {string.Join(", ", numbersList)}";
+        }
+
+        public static double GetMinNumber()
+        {
+            return numbersList.Min();
+        }
+
+        public static double GetMaxNumber()
+        {
+            return numbersList.Max();
+        }
+
+        public static double GetAllNumberSum()
+        {
+            return numbersList.Sum();
+        }
+
+        public static double GetArithmeticMean()
+        {
+            return numbersList.Sum() / numbersList.Count;
+        }
+
+        public static double GetMedian()
+        {
+            var sortedList = numbersList;
+            sortedList.Sort();
+            if (numbersList.Count % 2 == 0)
+            {
+                return (sortedList[sortedList.Count / 2] + sortedList[sortedList.Count / 2 - 1]) / 2;
+            }
+
+            return sortedList[sortedList.Count / 2];
+        }
+
+        public static void PrintResult()
+        {
+            Console.Clear();
+            if (numbersList.Count == 0)
+            {
+                Console.WriteLine("Zadejte prosim cisla");
+            }
+
+            Console.WriteLine("\nPokracujte stisknutim libovolneho tlacitka");
+            Console.ReadKey();
+        }
+    }
+
+    class Program
+    {
+        static void Main()
+        {
+            var menuOn = true;
+            while (menuOn)
+            {
+                PrintMenu();
+                SelectAction();
+            }
+        }
+
+        static void SelectAction()
+        {
+            var selectedAuction = Console.ReadKey(true).KeyChar;
+            switch (selectedAuction)
+            {
+                case '1':
+                    Calculator.AddNumbersToList();
+                    break;
+                case '2':
+                    if (Calculator.numbersList.Count == 0) goto case '1';
+                    Console.WriteLine($"Vypis cisel: {string.Join(", ", Calculator.numbersList)}");
+                    PrintContinueInfo();
+                    break;
+                case '3':
+                    if (Calculator.numbersList.Count == 0) goto case '1';
+                    Console.WriteLine($"Minimum ze vsech cisel je: {Calculator.GetMinNumber()}");
+                    PrintContinueInfo();
+                    break;
+                case '4':
+                    if (Calculator.numbersList.Count == 0) goto case '1';
+                    Console.WriteLine($"Maximum ze vsech cisel je: {Calculator.GetMaxNumber()}");
+                    PrintContinueInfo();
+                    break;
+                case '5':
+                    if (Calculator.numbersList.Count == 0) goto case '1';
+                    Console.WriteLine($"Suma vsech cisel je: {Calculator.GetAllNumberSum()}");
+                    PrintContinueInfo();
+                    break;
+                case '6':
+                    if (Calculator.numbersList.Count == 0) goto case '1';
+                    Console.WriteLine($"Prumer ze vsech cisel je: {Calculator.GetArithmeticMean()}");
+                    PrintContinueInfo();
+                    break;
+                case '7':
+                    if (Calculator.numbersList.Count == 0) goto case '1';
+                    Console.WriteLine($"Median ze vsech cisel je: {Calculator.GetMedian()}");
+                    PrintContinueInfo();
+                    break;
+                case '8':
+                    Environment.Exit(0);
+                    break;
+            }
+        }
+
+        static void PrintMenu()
+        {
+            Console.Clear();
+            Console.WriteLine("Super kalkulacka\n" +
+                              "Volby:\n" +
+                              "[1] Zadani cisel\n" +
+                              "[2] Vypis cisel\n" +
+                              "[3] Nalezeni minima ze vsech cisel\n" +
+                              "[4] Nalezeni maxima ze vsech cisel\n" +
+                              "[5] Vypocet sumy vsech cisel\n" +
+                              "[6] Vypocet prumeru ze vsech cisel\n" +
+                              "[7] Vypocet medianu\n" +
+                              "[8] Konec programu");
+        }
+
+        static void PrintContinueInfo()
+        {
+            Console.WriteLine("\nPokracujte stisknutim libovolneho tlacitka");
+            Console.ReadKey();
+        }
+    }
+}
